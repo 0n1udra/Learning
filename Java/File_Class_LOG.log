@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2017-10-07T15:44:46</date>
+  <millis>1507405486382</millis>
+  <sequence>0</sequence>
+  <logger>Other.Java_Utils$Logging_Class</logger>
+  <level>INFO</level>
+  <class>Other.Java_Utils$Logging_Class</class>
+  <method>&lt;init&gt;</method>
+  <thread>1</thread>
+  <message>My First log</message>
+</record>
+</log>

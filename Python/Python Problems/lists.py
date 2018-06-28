@@ -1,0 +1,1 @@
+print('lol', 'hah', 'hah')

@@ -1,0 +1,39 @@
+#bluetable2 table, td, th {
+                            border-collapse: collapse;
+                            padding: 5px;
+                            text-align: left;
+                            border-color: #004ecc;
+                            border-width: 1px
+                          }
+    #bluetable2 table {border-style: solid}
+    #bluetable2 th {background: #659bf2;
+                    border-radius: 4px;}
+    #bluetable2 td {background: #a9c1e8;
+                    border-radius: 4px}
+                  
+#greentable2 table, td, th {
+                            border-collapse: collapse;
+                            padding: 5px;
+                            text-align: center;
+                            border-color: #0c9600;
+                            border-width: 1px
+                      }
+    #greentable2 table {border-style: groove}
+    #greentable2 th {background: #60ef53;
+                    border-radius: 4px;}
+    #greentable2 td {background: #90f4a6;
+                    border-radius: 4px}
+                  
+#redtable2 table, td, th {
+                            border-collapse: collapse;
+                            padding: 5px;
+                            text-align: right;
+                            border-color: #a30000;
+                            border-width: 1px
+                      }
+  #redtable2 table {border-style: dotted}
+  #redtable2 th {background: #f73d3d;
+                border-radius: 4px;}
+  #redtable2 td {background: #f29393;
+                border-radius: 4px}
+

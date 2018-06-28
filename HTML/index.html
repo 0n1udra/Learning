@@ -1,0 +1,412 @@
+<!DOCTYPE HTML5> <! sets html type>
+<html lang="en-US"> 
+<!--- init html code. sets lang to en US. important for translation, screen readers, etc--->
+    
+
+    <head> 
+    <!--- heading of webate--->
+        <head>index.html</head>
+        <link rel="shortcut icon" href="code.png" />
+        <link rel='stylesheet' type='text/css' href='indexStyle.css'/>
+        <style>
+            * {text-align: center}
+        
+        </style>
+    </head>
+
+    <style>
+        body {background-color: #7280ea;}
+            /*
+            font: can set all of these attrs. in this order. these can also be use indivdually. 
+            you don't have to use all of them. but has to be in this order.
+            i.e. font-style: italic;
+            font-style - italic, oblique, normal
+            font-variant - inherit, small-caps, normal
+            font-weight - 100..900, bold, bolder, inherit, lighter, normal
+            font-size/line-height - 10px/20px
+            font-family - verdana, sans-serif/serif
+            */
+        
+    </style>
+
+    <body>
+    <!--- body of the page--->
+        <div id='menuBar'>
+            <style>
+                #topMB ul {
+                    list-style-type: none;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f1f1f1;
+                    border: 1px solid #555;
+                    overflow: hidden;
+                    text-align: center
+                }
+                #topMB li{display: inline;
+                        float: left;
+                        border-right: 1px solid black}
+
+                #topMB li a {
+                    display: block;
+                    color: #666;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    text-align: center;
+                    border-bottom: 1px solid #555;
+                }
+                #topMB li a.active {
+                    background-color: #4CAF50;
+                    color: white;
+                    }
+                /* Change the link color on hover */
+                #topMB li a:hover:not(.active) {
+                    background-color: #555;
+                    color: white;
+                }
+                #topMB li:last-child {border-bottom: none;}
+                
+                #topMB ul a {text-align: center}
+                
+
+            </style>
+
+            <div id='topMB'>
+
+
+                <ul>    
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#Text">Text</a></li>
+                    <li><a href="#Data">Data</a></li>
+                    <li><a href='#js'>Javascript</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+
+
+
+            </div>
+
+
+        </div>
+        
+        <div id='Text'>
+            <h1>text</h1>
+    <!---------------TEXT BASICS------------------>
+                <h3 style='color:red' id='Text'>Text color</h3>
+                    <h1>Heading</h1> 
+                    <!--- first heading--->
+
+                    <p>Then paragraph</p> 
+                    <!--- first paragraph (smaller text)--->
+
+                    <h1 style='color:red'>Heading 1</h1>
+                    <h2 style='color:yellow'>Heading 2</h2>
+                    <h3 style='color:orange'>Heading 3</h3>
+                    <h4 style='color:pink'>Heading 4</h4>
+                    <h5 style='color:blue'>Heading 5</h5>
+                    <h6 style='color:purple'>heading 6</h6>
+                    <!--- different heading text size--->
+
+                    <p>another paragraph</p>
+                    <!--- paragraph--->
+
+                    <p> 
+                        aaaaaaaaaaaaa
+                        bbbbbbbbbbbbb
+                    </p>
+                    <!--- p doesn't preserver your spacing, this well all be on one line--->
+                    <pre> 
+        aaaaaaaaaaa
+        bbbbbbbbbbb 
+
+                    </pre>
+                    <!--- preserves format--->
+            <div id='fontTypes'>
+                <h3>Font Formats</h3>
+                    <b>Bold!</b>
+                    <i>Italic</i>
+                    <mark>marked</mark>
+                    <em>emphesized!</em>
+                    <small>smaaalll</small>
+                    <del>DELETED!</del>
+                    <ins>inserted</ins>
+                    <sub>subscript</sub>
+                    <sup>superscript</sup>
+                    <address>address 123 st street, city US 12345</address>
+            </div>
+        </div>
+        
+        <style>
+            #Data > * {padding: 50px}
+        </style>
+        <h1>Data</h1>
+        <div id='Data' style='display:flex'>
+    <!---------------------DATA--------------------------------->
+            <div id='Data.list'>
+            <h3>Lists</h3>
+                <ul>
+                    <li>List item 1</li>
+                    <li>Hello</li>
+                    <li>Uh oh</li>
+                </ul>
+                <!--- un-ordered list (bullet points)--->
+                <ol>
+                    <li>one</li>
+                    <li>two</li>
+                    <li>three</li>
+                </ol>
+                <!--- ordered list (numbered)--->
+                <!--- ol has type='1 A a i I' numbered, uppercase letter, lowercase letter, lowercase roman numeral, uppercase roman numeral--->
+                <ul style="list-style-type:disc">
+                    <li>Hey look disc</li>
+                </ul> <!--- filled in circle--->
+                <ul style="list-style-type:circle">
+                    <li>A Circle!!!</li>
+                </ul> <!--- hallow circle--->
+                <ul style='list-style-type:square'> 
+                    <li>square!</li>
+                </ul> <!--- filled in square--->
+                <ul style='list-style-type:none'>
+                    <li>aw nothing</li>
+                </ul> <!--- shows no bullet point--->
+            </div>
+            
+            <div id='Data.table'>
+            <h3>Table</h3>
+                <style>
+                   #table1 table, td, th {
+                                    border-collapse: collapse;
+                                    padding: 5px;
+                                    text-align: center;
+                                    border-color: #35fc05;
+                                    border-width: 1px
+                      }
+                   #table1 table {border-style: dotted}
+                   #table1 th {background: #7e93b7;
+                        border-radius: 5px;}
+                   #table1 td {background: #d15569;
+                        border-radius: 5px}
+                    /* td for items
+                    th for headers
+                    table for whole thing
+                    */
+                </style>
+                <div id='table1'>
+                    <table style='width:50%'>
+                        <caption>This is a table</caption>
+                        <tr>
+                            <th>header 1</th>
+                            <th colspan="2">header 2</th>
+                            <th rowspan="2">header 3</th>
+                        </tr>
+                        <tr>
+
+                            <td>item 1</td>
+                            <td>item 2</td>
+                            <td>item 3</td>
+                        </tr>
+                    </table>
+                </div>
+                <dl>
+                    <dt>favorite Games </dt>
+                    <dd>~ League of Legends</dd>
+                    <dd>~ Warframe</dd>
+                    <dd>~ Rocket League</dd>
+                    <dt>Favorite Food</dt>
+                    <dd>~ Watermelon</dd>
+                    <dd>~ Hamberburger</dd>
+                </dl>
+            </div>
+            
+            <br><br>
+        <div id='Data.form'>
+            <h3>Forms</h3>
+            <form>
+                <!--- <form action"/.php"> --->
+                    <p>text input</p>
+                    <input type='text' name='fname' placeholder='First Name'>
+                    <!--- creates input box, First Name will be the grey text in box --->
+                    <br>
+                    <input type='text' name='lname' placeholder='Last Name'>
+                    <br>
+                    <p> radio button </p>
+                    <input type='radio' name='gender' value='male'> Male
+                    <input type='radio' name='gender' value='female'> female
+                    <br>
+                    <p> checkbox </p>
+                    <input type='checkbox' name='accept' value='accepted'> Agree
+                    <br>
+                    <p> time and date </p>
+                    <input type='time' name='time'>
+                    <br>
+                    <input type='date' name='date'>
+                    <br>
+                    <input type="datetime" name=datetime>
+                    <br>
+                    <input type='week' name='week'>
+                    <br>
+                    <input type="datetime-local" name='datetimelocal'>
+                    <br>
+                    <p> email </p>
+                    <input type="email" name='email'>
+                    <br>
+                    <p> file </p>
+                    <input type='file'name='file'>
+                    <br>
+                    <p> image </p>
+                    <input type='image' name='image'>
+                    <br>
+                    <p> color </p>
+                    <input type='color' name='color'>
+                    <br>
+                    <p> url </p>
+                    <input type='url' name='url'>
+                    <br>
+                    <p> phone </p>
+                    <input type='tel' name='phone'>
+                    <br>
+                    <p> search </p>
+                    <input type='search' name='search'>
+                    <br>
+                    <p> range </p>
+                    <input type='range' name='range'>
+                    <br>
+                    <p> password </p>
+                    <input type='password' name='password'>
+                    <br>
+                    <p> reset </p>
+                    <input type='reset' style='margin:5px'>
+                    <!--- resets all input --->
+                    <input type='submit' value='Submit' style='margin:5px'>
+                    <!--- creates submit button --->
+
+                </form>
+            </div>
+        </div>
+        
+        <div id='Media'>
+        <h1>Media</h1>
+<!---------------MEDIA----------------------->
+            <h3 title="A Tooltip!!!">Tooltip</h3>
+
+            <h3>Links</h3>
+                <a href="https://www.youtube.com">YouTube Link</a>
+                <!--- creates link to youtube--->
+                <ul>
+                    <li></li><a href='https://www.google.com' target="_blank">Open in _newtab</a>
+                    <a href="https://www.google.com" target="_parent">Open in _parent</a>
+                    <a href="https://www.google.com" target="_parent">Open in _self</a>
+                    <a href="https://www.google.com" target="_top">Open in _top</a>
+                    <!--- opens links differently--->
+                </ul>
+                <a href="#Text">Go to Top</a>
+                <!--- go to positon on webpage. have to use id='' to go to--->
+        
+                <a href='mailto:email@email.com' target="_top">mail me</a>
+                <!--- a mail link--->
+            <br>
+            <h3>Images</h3>
+                <img title='a html image' src="html5logo.png" alt="https://en.wikipedia.org/wiki/HTML5" width="100" height="100">
+                <!--- src - source of image on computer. alt - text to show if file error. width and height of image--->
+        
+                <figure>
+                    <img src="https://html5readiness.com/assets/HTML5_Logo.svg" alt="from another website" width="100" height="100">
+                    <!--- src - source is a image link from web instead of on computer--->
+                    <figcaption>Image from web link</figcaption>
+                    <!--- caption for image--->
+                </figure>
+                
+                <a href='https://www.w3schools.com/html/html_links.asp'>
+                    <img src='html5logo.png' alt='goes to w3school' width='320' height='240'>
+                </a>
+        
+            <div id='video' style='margin:2px'>
+            <h3>Video</h3>
+                <video width=320 height="240" controls>
+                    <source src='PRO%20FIDGET%20SPINNER%20TRICKS%20(very%20cool).mp4' type="video/mp4"></video> 
+                <!--- show video on computer. use autoplay instead of controls to autoplay--->
+        
+                <br><br><br>
+        
+                <iframe width="320" height="240" src="https://www.youtube.com/embed/1xv_FeBGzfk" frameborder="0" allowfullscreen></iframe>
+                <!--- embed YouTube video--->
+            </div>
+            <br><br>
+            <div id='audio'>
+            <h3>Audio</h3>
+                <audio controls>
+                    <source src='MusicNCS.mp3' type='audio/mp3'>
+                </audio>
+            </div>
+                
+           <br><br><br><br><br><br>
+        
+        <div id='js'>
+        <h1 style='color:orange'>Javascript</h1>
+            <style>
+                   #table2 table, td, th {
+                                    border-collapse: collapse;
+                                    padding: 5px;
+                                    text-align: center;
+                                    border-width: 1px;
+                                    align-items: center;
+                                    
+                      }
+                    
+                    
+                   
+                </style>
+                <div id='table2' class='t2' >
+                    <table style='width:50%; margin:0px auto'>
+                        <caption>This is a table</caption>
+                        <tr>
+                            <th>header 1</th>
+                            <th colspan="2">header 2</th>
+                            <th rowspan="2">header 3</th>
+                        </tr>
+                        <tr>
+
+                            <td>item 1</td>
+                            <td>item 2</td>
+                            <td>item 3</td>
+                        </tr>
+                    </table>
+                </div>
+            <script>
+                function blueTable() {
+                    console.log('changing to blue table')
+                    document.querySelector('.t2').id = 'bluetable2';
+                    console.log('changed to blue')
+                    }
+                     
+                function greenTable() {
+                    console.log('changing to green table')
+                    document.querySelector('.t2').id = 'greentable2';
+                    console.log('changed to green');  }
+                    
+                function redTable() {
+                    console.log('changing to red table')
+                    document.querySelector('.t2').id = 'redtable2';
+                    console.log('changed to red');
+                    }
+
+            
+            </script>
+            <br><br>
+            <style> button {padding: 5px; margin: 5px} </style>
+            <button type='button' onclick="blueTable();" style='color:blue'>Blue</button>
+            <button type='button' onclick="greenTable();" style='color:green'>Green</button>
+            <button type='button' onclick="redTable();" style='color:red'>Red</button>
+        </div>
+        
+        <div id='webContent'>
+        <h1>Webpage Content</h1>
+        </div>
+        
+
+
+    </body>
+    
+    
+    
+    
+</html>

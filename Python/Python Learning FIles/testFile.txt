@@ -1,0 +1,13 @@
+1) Test file for testing file I/O
+2) second line
+3) third line
+4) fourth line
+5) fifth line
+6. sixth line
+7. seventh line
+8. eighths line
+9. ninth line
+10: tenth line!
+Some Extra text
+1:9
+
