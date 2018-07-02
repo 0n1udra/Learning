@@ -6,9 +6,6 @@ fi;
 
 # personal
 
-
-
-
 ###########
 prompt_git() {
 	local s='';
@@ -108,8 +105,6 @@ export COLOR_YELLOW='\e[1;33m'
 export COLOR_GRAY='\e[0;30m'
 export COLOR_LIGHT_GRAY='\e[0;37m'
 
-
-
 # Highlight the user name when logged in as root.
 if [[ "${USER}" == "root" ]]; then
 	userStyle="${COLOR_YELLOW}";
@@ -126,21 +121,16 @@ else
         hostStyle="${yellow}";
 fi;
 
-
-
-
 # Set the terminal title and prompt.
 PS1="\[\033]0;\W\007\]"; # working directory base name
 PS1+="\[${bold}\]\n"; # newline
 PS1+="\[${userStyle}\]\u"; # username
 PS1+="\[${white}\] > ";
 PS1+="\[${COLOR_GREEN}\]\w"; # working directory full path
-PS1+="\$(prompt_git \"\[${white}\] : \[${blue}\]\" \"\[${blue}\]\")"; # 
-Git repository details
+PS1+="\$(prompt_git \"\[${white}\] : \[${blue}\]\" \"\[${blue}\]\")"; #Git repository details
 PS1+="\n";
 PS1+="\[${white}\]\${symbol}> \[${reset}\]"; # `$` (and reset color)
 export PS1;
-
 
 #####################################################3
 
@@ -148,16 +138,18 @@ export PS1;
 # The original version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 
+# Set vim to default editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
 # perminate aliases, can be unalias for current session
 alias ls='ls -GFh'
 alias ll='ls -lah'
 alias python=python3
 alias python2=python2.7
 alias install='brew install'
-alias sl='open /Users/drake/Documents/sl_touchbar/sl_on_touchbar.app && sl'
-# opens the sl for touchbar gimmick, also runs the original sl
-
 alias nano='nano --linenumbers --smooth -c --morespace'
+
 # enable mouse support, show line numbers, add more space and show more info at bottom
 
 alias sedit="open /Applications/Sublime\ Text.app"
@@ -167,9 +159,6 @@ alias sedit="open /Applications/Sublime\ Text.app"
 # The original version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 export PATH
-
-
-
 
 ############################################ from github
 #!/usr/bin/env bash
@@ -182,7 +171,6 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
-
 
 if ls --color > /dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
@@ -214,8 +202,7 @@ alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 alias ls="command ls ${colorflag}"
 
 # Always enable colored `grep` output
-# Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias 
-usage.
+# Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -223,46 +210,25 @@ alias egrep='egrep --color=auto'
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
-# Get week number
-alias week='date +%V'
-
 # Stopwatch
-alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat 
-&& date'
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
 
-# Get macOS Software Updates, and update installed Ruby gems, Homebrew, 
-npm, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew 
-cleanup; npm install npm -g; npm update -g; sudo gem update --system; 
-sudo gem update; sudo gem cleanup'
-
-# Google Chrome
-alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ 
-Chrome'
+# Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
+alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? 
-\(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk 
-'{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Show active network interfaces
-alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: 
-active'"
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 
 # Flush Directory Service cache
 alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
 # Clean up LaunchServices to remove duplicates in the “Open With” menu
-alias 
-lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister 
--kill -r -domain local -domain system -domain user && killall Finder"
-
-# View HTTP traffic
-alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
-alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E 
-\"Host\: .*|GET \/.*\""
+alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
 
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
@@ -287,10 +253,7 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 # Empty the Trash on all mounted volumes and the main HDD.
 # Also, clear Apple’s System Logs to improve shell startup speed.
 # Finally, clear download history from quarantine. https://mths.be/bum
-alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv 
-~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 
-~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 
-'delete from LSQuarantineEvent'"
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash"
 
 # Show/hide hidden files in Finder
 alias show="defaults write com.apple.finder AppleShowAllFiles -bool true 
@@ -315,9 +278,6 @@ alias spoton="sudo mdutil -a -i on"
 # PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
 alias plistbuddy="/usr/libexec/PlistBuddy"
 
-# Airport CLI alias
-alias 
-airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
 
 # Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
 # (useful when executing time-consuming commands)
@@ -336,20 +296,11 @@ done
 # Make Grunt print stack traces by default
 command -v grunt > /dev/null && alias grunt="grunt --stack"
 
-# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
-alias stfu="osascript -e 'set volume output muted true'"
-alias pumpitup="osascript -e 'set volume output volume 100'"
-
-
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
 
-
 # added by Anaconda3 5.2.0 installer
 export PATH="/anaconda3/bin:$PATH"
-clear; clear;
-printf "\n\n\n\n\n\n"
-clear

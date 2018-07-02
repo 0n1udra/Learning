@@ -61,6 +61,10 @@ set incsearch " Search while typing
 " Stops search highlihting with shorcut , Space
 nnoremap <leader><space> :nohlsearch<CR>
 
+" Split 
+set splitbelow
+set splitright
+
 " ===== Editing
 set foldenable " Allows folding
 set foldlevelstart=10
