@@ -75,7 +75,8 @@ def goUpDirectory():
 
     except: print("ERROR: goBackDirectory | Can't go back")
 
-def goBackDirectory(): updateFiles(Paths[-2])
+def goBackDirectory():
+    updateFiles(Paths[-2])
 
 def refresh():
     updateFiles(Paths[-1], newNameInput.get())
@@ -93,13 +94,17 @@ def changeNames(newFileNames=''):
         # checks to see if got any input in rename box
             gotInput = True  # if so allows renaming, if not doesn't do anything
 
-            try: nameInpList = nameInp.split('<x>')
+            try:
+                nameInpList = nameInp.split('<x>')
             # tries to split input with <x>
-            except: print('INFO: New Name Input | <x> not specified')
+            except:
+                print('INFO: New Name Input | <x> not specified')
 
-        else: print("INFO: New Name Input | No input")
+        else:
+            print("INFO: New Name Input | No input")
 
-    except: print("INFO: New Name Input | No input")
+    except:
+        print("INFO: New Name Input | No input")
     print('nameInp: changeNames |', nameInp)
     print('nameInpList: changeNames |', nameInpList)
 
