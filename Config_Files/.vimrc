@@ -22,9 +22,9 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'jacoborus/tender.vim' "Color scheme
 Plugin 'vim-airline/vim-airline'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'vim-dragvisuals.vim'
+Plugin 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-
+Plugin 'pablobfonseca/vim-dragvisuals'
 " ...
 " All of your Plugins must be added before the following line
 
@@ -98,27 +98,12 @@ set encoding=utf-8
 
 highlight ColorColumn ctermbg=grey
 call matchadd('ColorColumn', '\%81v', 100) " Only shows grey column bar if line text is breaking 80 char. for ex here :)
-"
-" Flashes next search in red
-function! HLNext (blinktime)
-    let [bufnum, lnum, col, off] = getpos('.')
-    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
-    let target_pat = '\c\%#\%('.@/.'\)'
-    let ring = matchadd('WhiteOnRed', target_pat, 101)
-    redraw
-    exec 'sleep ' . float2nr(a:blinktime * 1000) . 'm'
-    call matchdelete(ring)
-    redraw
-endfunction
-
-Bundle 'pablobfonseca/vim-dragvisuals'
 
 vmap  <expr>  <LEFT>   DVB_Drag('left')
 vmap  <expr>  <RIGHT>  DVB_Drag('right')
 vmap  <expr>  <DOWN>   DVB_Drag('down')
 vmap  <expr>  <UP>     DVB_Drag('up')
 vmap  <expr>  D        DVB_Duplicate()
-
 
 " Remove any introduced trailing whitespace after moving
 let g:DVB_TrimWS = 1
