@@ -18,7 +18,7 @@ prompt_git() {
 		if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
 
 			# Ensure the index is up to date.
-			git update-index --really-refresh -q &>/dev/null;
+			git update-index --really-refresh_Treeview -q &>/dev/null;
 
 			# Check for uncommitted changes in the index.
 			if ! $(git diff --quiet --ignore-submodules --cached); then

@@ -1,3 +1,6 @@
+# Drake Thomas
+
+
 from tkinter import *
 import tkinter.ttk as ttk
 import tkinter.messagebox as mb
@@ -6,10 +9,10 @@ import os
 """ this well do stuff """
 
 extensions = []
-oldPath = ''
-Paths = []
+old_path = ''
+previous_paths = []
 def updateFiles(path, newFileName='_'):
-    global Paths
+    global previous_paths
     dir_path = path
     os.chdir(dir_path)  # sets path of files
     chDirInput.delete('0', 'end')  # clears chDirInput whole entry box
@@ -49,7 +52,7 @@ def changeDir(x):
 
 
 def updateOldPath():
-    global oldPath
+    global old_path
     oldPath = '/'.join(os.getcwd().split('/')[:-1])
     # gets current directory, then splits it by / , then gets everything but the last item, then rejoins it with /.
     # Ex. /Users/drake/Desktop/Python > /Users/drake/Desktop
@@ -71,15 +74,15 @@ def goUpDirectory():
     try:
         updateOldPath()  # this is so you can go back more even when you type a full directory. Without this an
         # inputted a path then want to go back one directory; it won't work
-        updateFiles(oldPath)  # updates treeview
+        updateFiles(old_path)  # updates treeview
 
     except: print("ERROR: goBackDirectory | Can't go back")
 
 def goBackDirectory():
-    updateFiles(Paths[-2])
+    updateFiles(previous_paths[-2])
 
 def refresh():
-    updateFiles(Paths[-1], newNameInput.get())
+    updateFiles(previous_paths[-1], newNameInput.get())
 
 def changeNames(newFileNames=''):
     # this well rename the files, and adds number to front
