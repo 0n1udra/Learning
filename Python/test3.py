@@ -1,5 +1,5 @@
-import tkinter as txxxk
+import tkinter
 import os
 
-x = '1234...'
+x = "123456"
 print(x[:-3])

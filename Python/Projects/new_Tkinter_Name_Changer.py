@@ -9,7 +9,7 @@ import logging
 # Currently only works on Mac OS
 
 class File_System:
-    def __init__(self, path='~/Desktop'):
+    def __init__(self):
         print("Current directory:", os.getcwd())
 
     # Changes directory from input in entry box
@@ -19,6 +19,7 @@ class File_System:
             os.chdir(path)
         except OSError:
             print(f"Error: {path} not accessible")
+            return 0
         else:
             print("Current directory now:", os.getcwd())
             return os.getcwd()
@@ -29,6 +30,7 @@ class File_System:
             os.chdir('/'.join(os.getcwd().split('/')[:-1]))
         except OSError:
             print("Error: Can't go to parent directory")
+            return 0
         else:
             print("Current Directory now:", os.getcwd())
             return os.getcwd()
@@ -38,17 +40,53 @@ class File_System:
             os.rename(file, rename)
         except OSError:
             print(f"Error: Can't rename {file} to {rename}")
+            return 0
         else:
-            print(f"Renamed: {file} > {final_filename}")
+            print(f"Renamed: {file} > {rename}")
+            return rename
+
+    def delete_File(self, file):
+        try:
+            os.remove(file)
+        except OSError:
+            print(f"Error: Can't delete {file}")
+            return 0
+        else:
+            print(f"{file} Deleted")
+            return 1
 
     def __str__(self):
         return "Current location:", os.getcwd()
+
+class Popup_Window:
+        # Asks user for new filename
+        def __init__(self, master, current_file):
+            self.top = tk.Toplevel(master)
+            ttk.Label(self.top, text=f"Rename {current_file}").pack()
+            self.new_name = ttk.Entry(self.top)
+            self.new_name.pack()
+            self.confirm_button = ttk.Button(self.top, text='Ok', command=self.cleanup).pack()
+
+        # Makes sure to close window and save value
+        def cleanup(self):
+            self.rv = self.new_name.get()
+            self.top.destroy()
+
+        # Return value by just using str() on Popup_Window instance
+        def __str__(self):
+            return str(self.rv)
 
 class Renaming_Window:
     def __init__(self, master, file_sys):
         self.master = master
         master.geometry('1000x500')
         master.title('Change File Names')
+
+        # Popup menu setup
+        self.popup = tk.Menu(root, tearoff=0)
+        self.popup.add_command(label="Open", command=self.open_Item)
+        self.popup.add_command(label="Delete", command=self.delete_Item)
+        self.popup.add_command(label="Rename", command=self.rename_Item)
 
         # Setup left frame
         left = ttk.Frame(master)
@@ -72,11 +110,9 @@ class Renaming_Window:
         # treeview column
         self.show_file_win = ttk.Treeview(right, columns=('files'), show='headings')
 
-        # Files column
-        self.show_file_win.heading('files', text='Files')
-
         # Double click a directory to enter
         self.show_file_win.bind('<Double-1>', self.go_Into_Dir)
+        self.show_file_win.bind('<Button-2>', self.tree_Popup_Menu)
 
         # Fills and expands treeview so it fills right frame correctly
         self.show_file_win.pack(expand=True, fill=tk.BOTH)
@@ -91,6 +127,10 @@ class Renaming_Window:
         # Refreshes table
         ttk.Button(bottom_right, text='Refresh', command=self.update_Files()).pack(side=tk.LEFT)
         ttk.Button(left, text='Change Names', command=self.change_Name).pack()
+
+        # TODO
+        self.change_dir_box.delete('0', 'end')
+        self.change_dir_box.insert('0', '/Users/drake/Desktop/test')
 
     def change_Name(self):
         make_sure = mb.askyesno('Change Names',  'Are you sure you want to rename these files?')
@@ -131,7 +171,6 @@ class Renaming_Window:
 
     # Updated treeview with files and folders
     def update_Files(self):
-
         # Clears and sets new text in entry box
         self.change_dir_box.delete('0', 'end')
         self.change_dir_box.insert('0', os.getcwd())
@@ -159,12 +198,43 @@ class Renaming_Window:
         file_sys.change_Dir(self.change_dir_box.get())
         self.update_Files()
 
+    def get_Selected_Item(self):
+        selected_item = str(self.show_file_win.item(self.show_file_win.selection())['values'][0])
+        # If item is a directory.
+        if "..." in selected_item:
+            selected_item = selected_item[:-3]
+        return selected_item
+
     # Go into directory from double click in treeview
     def go_Into_Dir(self, _):
         # Double click directory in treeview. get text value from current selection and removes trailing ...
-        current_item = str( self.show_file_win.item( self.show_file_win.selection() )['values'][0][:-3] )
-        file_sys.change_Dir(current_item)
+        file_sys.change_Dir(self.get_Selected_Item())
         self.update_Files()
+
+    # Popup command menu for treeview item
+    def tree_Popup_Menu(self, event):
+        try:
+            self.popup.tk_popup(event.x_root, event.y_root, 0)
+        except Exception:
+            print("Error: Popup menu issue")
+
+    # Delete item. TODO implement askyesno for directoies
+    def delete_Item(self):
+        file_sys.delete_File(self.get_Selected_Item())
+        self.update_Files()
+
+    def rename_Item(self):
+        # Asks user for new name of file. use str(self.rename_window) to get the resuilt
+        self.rename_window = Popup_Window(self.master, self.get_Selected_Item())
+        self.master.wait_window(self.rename_window.top)
+
+        file_sys.rename_File(self.get_Selected_Item(), str(self.rename_window))
+        self.update_Files()
+
+    def open_Item(self):
+        item = self.get_Selected_Item()
+        if ';' not in item:
+            os.system(f"open {item}")
 
 root = tk.Tk()
 
