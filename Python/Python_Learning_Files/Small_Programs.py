@@ -42,7 +42,7 @@ def n3():
             n = n * 3 + 1
     print(x)
 
-def fibo():
+def fibonacci():
     # this generates the fibonacci sequence, with length entered
 
     length = int(input("How long to run it? > "))
@@ -53,6 +53,23 @@ def fibo():
         x = numbers.index(currNum)
         currNum = numbers[x - 0] + numbers[x - 1]
         print(currNum)
+
+def fibonacci_2(limit=50):
+    nums = []
+    current, next = 0, 1
+    while current < limit:
+        current, next = next, next + current
+        nums.append(current)
+    return current
+
+def fibonacci_Gen():
+    current, next = 0, 1
+    while True:
+        current, next = next, next + current
+        yield current
+
+for i in range(10): print(fibonacci_Gen())
+
 
 def fibo_n3():
     n = int(input('type number: '))
@@ -74,7 +91,7 @@ def fibo_n3():
 
         print(currNum, '     ', str(n), '     ', str(currN))
 
-def fibo_recur(num):
+def fibo_recursion(num):
     x = 0
     counter = num
     n = 1
@@ -82,14 +99,14 @@ def fibo_recur(num):
         return 0
     else:
         print(n)
-        return x + fibo_recur(counter - 1)
+        return x + fibo_recursion(counter - 1)
 
 def divisor(num):
     num = int(input("Number Please > "))
-    Range = range(1, x + 1)
+    Range = range(1, num + 1)
     count = 0
     for i in Range:
-        if x % i == 0:
+        if num % i == 0:
             count += 1
             print(i, ' : divisor')
 
@@ -99,5 +116,7 @@ Programs = dir()[10:]
 
 
 if __name__ == '__main__':
-    print("Available Programs: ", Programs)
-    INPUT = str(input(("Choose > ")))
+    pass
+    # print("Available Programs: ", Programs)
+    # INPUT = str(input(("Choose > ")))
+
