@@ -10,7 +10,7 @@ public class test{
         System.out.print("Your String > ");
         inpStr = usrInp.next();
         recall(inpName, inpStr);
-
+        usrInp.close();
     }
 
 

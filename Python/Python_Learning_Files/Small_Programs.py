@@ -30,10 +30,9 @@ def Guess2():
             print("uh?")
 
 def n3():
-
-    x = 0
+    n = 0
     while n != 1:
-        x += 1
+        n += 1
         if n % 2 == 0:
             print(str(n) + ', even')
             n /= 2
@@ -41,7 +40,6 @@ def n3():
             print(str(n) + ', odd')
             n = n * 3 + 1
     print(x)
-
 def fibonacci():
     # this generates the fibonacci sequence, with length entered
 
@@ -53,7 +51,7 @@ def fibonacci():
         x = numbers.index(currNum)
         currNum = numbers[x - 0] + numbers[x - 1]
         print(currNum)
-
+fibonacci()
 def fibonacci_2(limit=50):
     nums = []
     current, next = 0, 1
@@ -68,7 +66,7 @@ def fibonacci_Gen():
         current, next = next, next + current
         yield current
 
-for i in range(10): print(fibonacci_Gen())
+#for i in range(10): print(fibonacci_Gen()
 
 
 def fibo_n3():
