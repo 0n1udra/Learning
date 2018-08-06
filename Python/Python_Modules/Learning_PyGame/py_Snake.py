@@ -1,124 +1,93 @@
+#!/usr/bin/env python
+# Drake Thoams
+# 8/5/2018
+
 import pygame as pg
-import DT as c
-from random import randrange
+from random import randrange as rd
 from time import sleep
 
+WHITE = 255, 255, 255
+BLACK = 0, 0, 0
+RED = 255, 0, 0
+GREEN = 0, 255, 0
+BLUE = 0, 0, 255
+BROWN = 153, 102, 51
 
 pg.init()
 
-##### Settings/Config #######
-windowSize = (900, 600)
-# it's in a variable so the game window can change and won't screw up anything else, like the game exit on side contact
-gameDisplay = pg.display.set_mode(windowSize)
 # sets window size
+window_size = (900, 600)
+game_display = pg.display.set_mode(window_size)
+# Window title and window icon
+pg.display.set_caption('Slither')
+pg.display.set_icon(pg.image.load('apple.png'))
 
 clock = pg.time.Clock()
 
-pg.display.set_caption('Slither')
-# sets window title
-pg.display.set_icon(pg.image.load('apple.png'))
-# sets window icon. best size is 32x32
+fps = 15
+snake_size = 20
+apple_size = 45
+movement = 20
 
-fps = 15  # fps
-snakeSize = 20  # snake size
-appleSize = 45  # apple size
-movement = 20  # movement speed
-
-# some game variables
-
-### Images/Sprites/Color ###
-snakeHead = pg.image.load('snakehead.png')
+snake_head = pg.image.load('snakehead.png')
 apple = pg.image.load('apple.png')
 
-
-# loads up images to use as sprites
-
-### Drawing Snake ###
-def snake(sSize, sList, sHead):
-    gameDisplay.blit(sHead, (sList[-1]))  # draws snake head sprite
-
-    for i in range(len(sList[:-1])):
-        pg.draw.rect(gameDisplay, c.BROWN, [sList[i][0], sList[i][1], sSize, sSize])
-        # draws body of snake
-
-
-### Apple ###
-def rand_Apple():
-    randAppleX = randrange(appleSize, windowSize[0] - appleSize)  # ,sSize)
-    randAppleY = randrange(appleSize, windowSize[1] - appleSize)  # ,sSize)
-    # creates a random position to put apple. (minNum, maxNum, divisibleBy)
-    return randAppleX, randAppleY
-
-
-### Draw Text to Screen ###
-def show_Msg(msg, coords, color=c.RED, font='verdana', fSize=30, fBold=False):
-    font = pg.font.SysFont(font, fSize, bold=fBold)  # sets settings for displaying text
+# Display messages on screen function
+def show_Msg(msg, coords, color=RED, font='verdana', fSize=30, fBold=False):
+    font = pg.font.SysFont(font, fSize, bold=fBold)
 
     if coords[0] == 0:
-        # checks if the x in coords is a 0
-        msgCenter = font.size(msg)[0]  # finds the width of teh text
-        coords = ((windowSize[0] / 2) - (msgCenter / 2), coords[1])
         # finds the middle of text, then subtracts it from the middle of screen, so it's the center
+        msg_center = font.size(msg)[0]
+        coords = ((window_size[0] / 2) - (msg_center / 2), coords[1])
 
-    screenText = font.render(msg, True, color)
     # creates text to render with input from msg and color
-    gameDisplay.blit(screenText, [coords[0], coords[1]])
-    # sets coords to put text at
+    screen_text = font.render(msg, True, color)
+    game_display.blit(screen_text, [coords[0], coords[1]])
     # this well not show the text ingame yet you have to do pg.display.update()
 
-
-### Game Intro ###
+# Game Intro
 def game_Intro():
     while True:
-        show_Msg('Snake', (0, 100), c.BLUE, fSize=80)
-        show_Msg('Q - Quit | SPACE - Begin', (0, 240), c.GREEN)
+        show_Msg('Snake', (0, 100), WHITE, fSize=80)
+        show_Msg('Q - Quit | SPACE - Begin', (0, 240), BLUE)
         pg.display.update()
-        # shows messages on screen
-'''
-        for event in pg.event.get():  # gets input
+
+        for event in pg.event.get():
             if event.type == pg.QUIT:
                 quit()
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_q:
                     quit()
                 if event.key == pg.K_SPACE:
-                    for i in reversed(range(1, 6)):
-                        gameDisplay.fill(c.BLACK)
-                        show_Msg(str(i), (0, 200), c.RED)
-                        pg.display.update()
-                        sleep(1)
-                    # countdown to begin game.
-                    break
-'''
+                    game_Loop()
 
-### Game Over ###
+# Game over screen
 def game_Over(score):
     while True:
-        show_Msg('GAME OVER', (0, 250), fSize=80)  # gives text, color, and position to put it at
-        show_Msg('C - Continue | Q - Quit', (0, 340))  # 0 for x if you want it to be centered
-        show_Msg('SCORE: {}'.format(score), (0, 380))
         # prints stuff out to screen in red
+        show_Msg('GAME OVER', (0, 250), fSize=80)
+        show_Msg('C - Continue | Q - Quit', (0, 340))
+        show_Msg('SCORE: %d'%score, (0, 380))
         pg.display.update()
 
-        for event in pg.event.get():  # gets key event
+        for event in pg.event.get():
+            # Close window button to quit
             if event.type == pg.QUIT:
                 quit()
-            # the makes it so you can press q or the close window button to quit
             if event.type == pg.KEYDOWN:
-                # checks if event is a keydown event(press key)
+                # Checks if event was q keypress for quit or c to continue
                 if event.key == pg.K_q:
                     quit()
-                # checks if it's q to stop the game
                 elif event.key == pg.K_c:
                     game_Loop()
-            # if c continues game
-            else:
-                print("Error | Q/C")
 
-### Pause Game ###
+# Pause game
 def pause_Game(score):
     while True:
-        show_Msg('PASUED', (0, 250), fSize=60)  # gives text, color, and position to put it at
+        show_Msg('PASUED', (0, 250), fSize=60)
+        show_Msg('C - Continue | Q - Quit', (0, 340), BLUE)
+        show_Msg('SCORE: %d'%score, (0, 380), GREEN)
         pg.display.update()
 
         for event in pg.event.get():
@@ -129,131 +98,117 @@ def pause_Game(score):
                     quit()
                 elif event.key == pg.K_c:
                     return
-                # if c continues game, stops all loops and returns nothing
-                else:
-                    print("Error | Q/C")
 
+# Random apple XY position
+def rand_Apple():
+    return rd(apple_size, window_size[0] - apple_size), \
+           rd(apple_size, window_size[1] - apple_size)
 
-##### Main Game Loop ################
+# Draws snake
+def snake(sSize, snake_list, snake_head):
+    # draws snake head sprite
+    game_display.blit(snake_head, (snake_list[-1]))
+    # draws body of snake
+    for i in range(len(snake_list[:-1])):
+        pg.draw.rect(game_display, BROWN, [snake_list[i][0], snake_list[i][1], sSize, sSize])
+
+# Main Game Loop
 def game_Loop():
-    global snakeHead
+    global new_snake_head, movement
 
-    ### Config ###
-    leadX = windowSize[0] / 2
-    leadY = windowSize[1] / 2
     # sets position of snake
+    leadX = window_size[0] / 2
+    leadY = window_size[1] / 2
     leadX_Change = 0
     leadY_Change = -movement
-    sHead = snakeHead
-    # sets change in direction. leadY_Change is -sSize so the game starts with it moving up
-
-    sList = []  # list of positions for snake parts
-    sLength = 0  # sets the length of the snake. sets score
-    score = 0
-
-    randAppleX, randAppleY = rand_Apple()
-
-    ### Hitting the Apple ###
-
-    # this is when you hit an apple. Respawns apple, adds to snake, add 1 to score
+    new_snake_head = snake_head
+    snake_list = []
+    snake_length = 0
+    rand_appleX, rand_appleY = rand_Apple()
 
     while True:
-        # while False game keeps running
-
         for event in pg.event.get():
-            # gets events going on(any interaction with window)
             if event.type == pg.QUIT:
                 quit()
-            ### Movement ###
             elif event.type == pg.KEYDOWN:
-                # checks if the current event is a KEYDOWN event
-
                 if event.key == pg.K_SPACE:
-                    pause_Game(score)
-                elif event.key == pg.K_LEFT:  # checks for what key it was
-                    leadX_Change = leadY_Change = 0  # clears current movement
-                    sHead = pg.transform.rotate(snakeHead, 90)  # rotates the snake
-                    leadX_Change -= movement  # move snake
-                elif event.key == pg.K_RIGHT:
+                    pause_Game(snake_length)
+                elif event.key in (pg.K_LEFT, pg.K_a):
+                    # Resets movement
                     leadX_Change = leadY_Change = 0
-                    sHead = pg.transform.rotate(snakeHead, 270)
+                    # Changes rotationn of snake head
+                    new_snake_head = pg.transform.rotate(snake_head, 90)
+                    # Change direction of correct axi
+                    leadX_Change -= movement
+                elif event.key in (pg.K_RIGHT, pg.K_d):
+                    leadX_Change = leadY_Change = 0
+                    new_snake_head = pg.transform.rotate(snake_head, 270)
                     leadX_Change += movement
-                elif event.key == pg.K_UP:
+                elif event.key in (pg.K_UP, pg.K_w):
                     leadX_Change = leadY_Change = 0
-                    sHead = pg.transform.rotate(snakeHead, 0)
+                    new_snake_head = pg.transform.rotate(snake_head, 0)
                     leadY_Change -= movement
-                elif event.key == pg.K_DOWN:
+                elif event.key in (pg.K_DOWN, pg.K_s):
                     leadX_Change = leadY_Change = 0
-                    sHead = pg.transform.rotate(snakeHead, 180)
+                    new_snake_head = pg.transform.rotate(snake_head, 180)
                     leadY_Change += movement
 
-        gameDisplay.fill(c.BLACK)  # sets background color
-        # this is down here so that when you pause you can see where you are and everything
+        # sets background color. Redraws screen. Comment this to see affect.
+        game_display.fill(BLACK)
 
-        show_Msg(msg=str(score), fSize=20, coords=(0, 10))
-        # shows score on screen
+        # shows score
+        show_Msg(msg=str(snake_length), fSize=20, coords=(0, 10))
 
+        # moves snake according to what you pressed
         leadX += leadX_Change
         leadY += leadY_Change
-        # moves snake according to what you pressed
 
-        ### Border ###
-        if (leadX > windowSize[0]):
+        # you can now go through a wall to go on the other side
+        if (leadX > window_size[0]):
             leadX = 0
         elif (leadX < 0):
-            leadX = windowSize[0]
-        elif (leadY > windowSize[1]):
+            leadX = window_size[0]
+        elif (leadY > window_size[1]):
             leadY = 0
         elif (leadY < 0):
-            leadY = windowSize[1]
-        # you can now go through a wall to go on the other side, Ex. go through right wall to come out of left wall
+            leadY = window_size[1]
 
-        print(leadX, leadY)
+        # checks if you are in the X boundary of the apple
+        if (leadX > rand_appleX) and (leadX < rand_appleX + apple_size) or \
+           (leadX + snake_size > rand_appleX) and (leadX + snake_size < rand_appleX + apple_size):
+            # checks Y boundary
+            if (leadY > rand_appleY) and (leadY < rand_appleY + apple_size) or \
+               (leadY + snake_size > rand_appleY) and (leadY + snake_size < rand_appleY + apple_size):
+                # hits apple
+                rand_appleX, rand_appleY = rand_Apple()
+                snake_length += 1
 
-        ### Apple Boundary ###
-        if (leadX > randAppleX) and (leadX < randAppleX + appleSize) or \
-                        (leadX + snakeSize > randAppleX) and (leadX + snakeSize < randAppleX + appleSize):
-            # checks if you are in the X boundary
-            if (leadY > randAppleY) and (leadY < randAppleY + appleSize) or \
-                            (leadY + snakeSize > randAppleY) and (leadY + snakeSize < randAppleY + appleSize):
-                # checks Y boundary
-                randAppleX, randAppleY = rand_Apple()  # hits apple
-                score += 1
-                sLength += 1
+        # Snake head position
+        snake_head_list = []
+        # Adds current snake head position to snake_head
+        snake_head_list.extend((leadX, leadY))
+        snake_list.append(snake_head_list)
+        # Draw snake
+        snake(snake_size, snake_list, new_snake_head)
 
-        ### Snake ###
-        sHeadList = []  # snake head position
-        sHeadList.extend((leadX, leadY))  # adds current snake head position to sHead
-        sList.append(sHeadList)  # adds to sList (snakeList)
-        snake(snakeSize, sList, sHead)  # calls function to draw snake
+        # checks if you moved into a position where your snake body already is
+        for segment in snake_list[:-1]:
+            if snake_head_list == segment:
+                game_Over(snake_length)
 
-        for segment in sList[:-1]:
-            if sHeadList == segment: game_Over(score)
-        # checks if you moved into a position where your snake body already is in it'll stop game
-
-        if len(sList) > sLength:
-            del sList[0]
+        if len(snake_list) > snake_length:
+            del snake_list[0]
             # makes sure snake length is the same as how many apples you picked up
             # this basically makes sure your snake isn't always growing when moving
 
-        ### Draw Apple ###
-        gameDisplay.blit(apple, [randAppleX, randAppleY])
+        # Draw apple
+        game_display.blit(apple, [rand_appleX, rand_appleY])
 
+        # Updates screen then goes to next frame
         pg.display.update()
-        # updates display. you need this if you want any animation or things to happen
-
-        clock.tick(fps)  # goes to next frame
+        clock.tick(fps)
 
     pg.quit()
     quit()
-    # quits pygame and quits script
-
 
 game_Intro()
-#####
-'''
-What is going on
-~ Init pygame
-~ Set Display size
-
-'''

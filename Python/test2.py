@@ -1,177 +1,240 @@
-# Drake Thomas
+#!/usr/bin/env python
+import pygame as pg
+from random import randrange
+from time import sleep
 
-import tkinter as tk
-import tkinter.ttk as ttk
-import tkinter.messagebox as mb
-import os
-import logging
+WHITE = 255, 255, 255
+BLACK = 0, 0, 0
+RED = 255, 0, 0
+GREEN = 0, 255, 0
+BLUE = 0, 0, 255
+MAGENTA = 255, 0, 255
+CYAN = 0, 255, 255
+PURPLE = 128, 0, 128
+ORANGE = 255, 128, 0
+BROWN = 153, 102, 51
 
-# Currently only works on Mac OS
+pg.init()
 
-class File_System:
-    def __init__(self, path='~/Desktop'):
-        print("Current directory:", os.getcwd())
+# sets window size
+window_size = (900, 600)
+game_display = pg.display.set_mode(window_size)
 
-    # Changes directory from input in entry box
-    def change_Dir(self, path):
-        try:
-            # Go into directory
-            os.chdir(path)
-        except OSError:
-            print(f"Error: {path} not accessible")
-        else:
-            print("Current directory now:", os.getcwd())
-            return os.getcwd()
+clock = pg.time.Clock()
 
-    def go_To_Parent(self):
-        try:
-            # Gets the parent directory using current from splitting by /
-            os.chdir('/'.join(os.getcwd().split('/')[:-1]))
-        except OSError:
-            print("Error: Can't go to parent directory")
-        else:
-            print("Current Directory now:", os.getcwd())
-            return os.getcwd()
+# Window title
+pg.display.set_caption('Slither')
+# Window icon. best size is 32x32
+pg.display.set_icon(pg.image.load('apple.png'))
 
-    def rename_File(self, file, rename):
-        try:
-            os.rename(file, rename)
-        except OSError:
-            print(f"Error: Can't rename {file} to {rename}")
-        else:
-            print(f"Renamed: {file} > {final_filename}")
+# How fast the game runs
+fps = 15
+snake_size = 20
+apple_size = 45
+movement = 20
 
-    def __str__(self):
-        return "Current location:", os.getcwd()
+snake_head = pg.image.load('snakehead.png')
+apple = pg.image.load('apple.png')
 
-class Renaming_Window:
-    def __init__(self, master, file_sys):
-        self.master = master
-        master.geometry('1000x500')
-        master.title('Change File Names')
+# Apple
+def rand_Apple():
+    rand_appleX = randrange(apple_size, window_size[0] - apple_size)  # ,sSize)
+    rand_appleY = randrange(apple_size, window_size[1] - apple_size)  # ,sSize)
+    # creates a random position to put apple. (minNum, maxNum, divisibleBy)
+    return rand_appleX, rand_appleY
 
-        # Setup left frame
-        left = ttk.Frame(master)
-        left.pack(side=tk.LEFT)
+def show_Msg(msg, coords, color=RED, font='verdana', fSize=30, fBold=False):
+    font = pg.font.SysFont(font, fSize, bold=fBold)
 
-        # Path entry box and Label. Binds Enter
-        ttk.Label(left, text='Path').pack()
-        self.change_dir_box = ttk.Entry(left)
-        self.change_dir_box.pack()
-        self.change_dir_box.bind("<Return>", self.change_Dir_Entry)
+    if coords[0] == 0:
+        # finds the middle of text, then subtracts it from the middle of screen, so it's the center
+        msg_center = font.size(msg)[0]
+        coords = ((window_size[0] / 2) - (msg_center / 2), coords[1])
 
-        # Rename entry Box and Label
-        ttk.Label(left, text='Rename').pack()
-        self.rename_box = ttk.Entry(left)
-        self.rename_box.pack()
+    # creates text to render with input from msg and color
+    screen_text = font.render(msg, True, color)
+    game_display.blit(screen_text, [coords[0], coords[1]])
+    # this well not show the text ingame yet you have to do pg.display.update()
 
-        # Setup right frame
-        right = ttk.Frame(master)
-        right.pack(side=tk.RIGHT, expand=True, fill=tk.BOTH)
+# Game Intro
+def game_Intro():
+    while True:
+        show_Msg('Snake', (0, 100), BLUE, fSize=80)
+        show_Msg('Q - Quit | SPACE - Begin', (0, 240), GREEN)
+        pg.display.update()
+        # shows messages on screen
+    '''
+        for event in pg.event.get():  # gets input
+            if event.type == pg.QUIT:
+                quit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_q:
+                    quit()
+                if event.key == pg.K_SPACE:
+                    for i in reversed(range(1, 6)):
+                        game_display.fill(c.BLACK)
+                        show_Msg(str(i), (0, 200), c.RED)
+                        pg.display.update()
+                        sleep(1)
+                    # countdown to begin game.
+                    break
+    '''
 
-        # treeview column
-        self.show_file_win = ttk.Treeview(right, columns=('files'), show='headings')
+# Game Over
+def game_Over(score):
+    while True:
+        # prints stuff out to screen in red
+        show_Msg('GAME OVER', (0, 250), fSize=80)
+        show_Msg('C - Continue | Q - Quit', (0, 340))
+        show_Msg('SCORE: %d'%score, (0, 380))
+        pg.display.update()
 
-        # Files column
-        self.show_file_win.heading('files', text='Files')
+        for event in pg.event.get():
+            # Close window button to quit
+            if event.type == pg.QUIT:
+                quit()
 
-        # Double click a directory to enter
-        self.show_file_win.bind('<Double-1>', self.go_Into_Dir)
+            if event.type == pg.KEYDOWN:
+                # Checks if event was q keypress for quit or c to continue
+                if event.key == pg.K_q:
+                    quit()
+                elif event.key == pg.K_c:
+                    game_Loop()
+            else:
+                print("Error: Press Q or C")
 
-        # Fills and expands treeview so it fills right frame correctly
-        self.show_file_win.pack(expand=True, fill=tk.BOTH)
+# Pause Game
+def pause_Game(score):
+    while True:
+        show_Msg('PASUED', (0, 250), fSize=60)
+        pg.display.update()
 
-        # Bottom right frame
-        bottom_right = tk.Frame(right)
-        bottom_right.pack(side=tk.BOTTOM, anchor=tk.CENTER)
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                quit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_q:
+                    quit()
+                elif event.key == pg.K_c:
+                    return
+            else:
+                    print("Error: Press Q or C")
 
-        # Go up a directory (parent directory)
-        ttk.Button(bottom_right, text="Up a Directory", command=self.go_Up_Directory).pack(side=tk.LEFT)
+def snake(sSize, snake_list, snake_head):
+    game_display.blit(snake_head, (snake_list[-1]))  # draws snake head sprite
 
-        # Refreshes table
-        ttk.Button(bottom_right, text='Refresh', command=self.update_Files()).pack(side=tk.LEFT)
-        ttk.Button(left, text='Change Names', command=self.change_Name).pack()
+    # draws body of snake
+    for i in range(len(snake_list[:-1])):
+        pg.draw.rect(game_display, BROWN, [snake_list[i][0], snake_list[i][1], sSize, sSize])
 
-    def change_Name(self):
-        make_sure = mb.askyesno('Change Names',  'Are you sure you want to rename these files?')
+def move_Snake(rotation):
+    global snake_head
+    leadX_Change = leadY_Change = 0
+    snake_head = pg.transform.rotate(snake_head, rotation)
+    leadX_Change += movement
 
-        name_inp = self.rename_box.get()
+# Main Game Loop
+def game_Loop():
+    global snake_head
 
-        if make_sure and name_inp:
-            x = 0
-            for file in os.listdir():
-                # Don't edit hidden linux files
-                if file.startswith('.'): continue
+    # sets position of snake
+    leadX = window_size[0] / 2
+    leadY = window_size[1] / 2
+    leadX_Change = 0
+    leadY_Change = -movement
+    new_snake_head = snake_head
 
-                if "<x>" in name_inp:
-                    new_filename = name_inp.replace("<x>", f"_{x}_")
+    snake_list = []  # list of positions for snake parts
+    snake_length = 0  # sets the length of the snake. sets score
 
-                    # Checks where <x> in the rename box so you don't get file names like. Ex.
-                    # _1_file.txt , _1_file_1_.txt , file_1_.txt . you get 1_file.txt , 1_file_1.txt , file_1.txt , etc
+    rand_appleX, rand_appleY = rand_Apple()
 
-                    # <x>filename<x> >> x_filename_x
-                    if new_filename[-1] == '_' and new_filename[0] == '_':
-                        final_filename = new_filename[1:-1]
-                    # filename<x> >> filename_x
-                    elif new_filename[0] == '_':
-                        final_filename = new_filename[1:]
-                    # <x>filename >> x_filename.
-                    elif new_filename[-1] == '_':
-                        final_filename = new_filename[:-1]
-                    else:
-                        final_filename = new_filename
-                else:
-                    final_filename = name_inp
-                x += 1
+    # this is when you hit an apple. Respawns apple, adds to snake, add 1 to score
 
-                final_filename = final_filename + '.' + ''.join(file.split('.')[1:])
-                file_sys.rename_File(file, final_filename)
+    while True:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                quit()
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    pause_Game(snake_length)
+                elif event.key == pg.K_LEFT:
+                    # clears current movement
+                    leadX_Change = leadY_Change = 0
+                    # rotates the snake
+                    new_snake_head = pg.transform.rotate(snake_head, 90)
+                    leadX_Change -= movement
+                elif event.key == pg.K_RIGHT:
+                    leadX_Change = leadY_Change = 0
+                    new_snake_head = pg.transform.rotate(snake_head, 270)
+                    leadX_Change += movement
+                elif event.key == pg.K_UP:
+                    leadX_Change = leadY_Change = 0
+                    new_snake_head = pg.transform.rotate(snake_head, 0)
+                    leadY_Change -= movement
+                elif event.key == pg.K_DOWN:
+                    leadX_Change = leadY_Change = 0
+                    new_snake_head = pg.transform.rotate(snake_head, 180)
+                    leadY_Change += movement
 
-            self.update_Files()
+        # sets background color
+        game_display.fill(BLACK)
 
-    # Updated treeview with files and folders
-    def update_Files(self):
+        # shows score on screen
+        show_Msg(msg=str(snake_length), fSize=20, coords=(0, 10))
 
-        # Clears and sets new text in entry box
-        self.change_dir_box.delete('0', 'end')
-        self.change_dir_box.insert('0', os.getcwd())
+        # moves snake according to what you pressed
+        leadX += leadX_Change
+        leadY += leadY_Change
 
-        # Clears all items in the treeview before listing more, by using tree.get_chidren()
-        self.show_file_win.delete(*self.show_file_win.get_children())
+        # you can now go through a wall to go on the other side, Ex. go through right wall to come out of left wall
+        if (leadX > window_size[0]):
+            leadX = 0
+        elif (leadX < 0):
+            leadX = window_size[0]
+        elif (leadY > window_size[1]):
+            leadY = 0
+        elif (leadY < 0):
+            leadY = window_size[1]
 
-        # Two loops to show folders first then files. Probably will find better solution
-        for file in os.listdir():
-            if not os.path.isdir(file):
-                self.show_file_win.insert('', 0, values=file)
+        print(leadX, leadY)
 
-        for dir in os.listdir():
-            # Adds three dots if the item is a directory
-            if os.path.isdir(dir):
-                self.show_file_win.insert('', 0, values=dir+'...')
+        # checks if you are in the X boundary of the apple
+        if (leadX > rand_appleX) and (leadX < rand_appleX + apple_size) or \
+        (leadX + snake_size > rand_appleX) and (leadX + snake_size < rand_appleX + apple_size):
+            # checks Y boundary
+            if (leadY > rand_appleY) and (leadY < rand_appleY + apple_size) or \
+            (leadY + snake_size > rand_appleY) and (leadY + snake_size < rand_appleY + apple_size):
+                # hits apple
+                rand_appleX, rand_appleY = rand_Apple()
+                snake_length += 1
 
-    # Goes up a directory from current position
-    def go_Up_Directory(self):
-        file_sys.go_To_Parent()
-        self.update_Files()
+        # Snake head position
+        snake_head_list = []
+        # Adds current snake head position to snake_head
+        snake_head_list.extend((leadX, leadY))
+        snake_list.append(snake_head_list)
+        # Draw snake
+        snake(snake_size, snake_list, _snake_head)
 
-    # Functionn for change_dir_entry box
-    def change_Dir_Entry(self, _):
-        file_sys.change_Dir(self.change_dir_box.get())
-        self.update_Files()
+        # checks if you moved into a position where your snake body already is
+        for segment in snake_list[:-1]:
+            if snake_head_list == segment:
+                game_Over(snake_length)
 
-    # Go into directory from double click in treeview
-    def go_Into_Dir(self, _):
-        # Double click directory in treeview. get text value from current selection and removes trailing ...
-        current_item = str( self.show_file_win.item( self.show_file_win.selection() )['values'][0][:-3] )
-        file_sys.change_Dir(current_item)
-        self.update_Files()
+        if len(snake_list) > snake_length:
+            del snake_list[0]
+            # makes sure snake length is the same as how many apples you picked up
+            # this basically makes sure your snake isn't always growing when moving
 
-root = tk.Tk()
+        # Draw apple
+        game_display.blit(apple, [rand_appleX, rand_appleY])
 
-file_sys = File_System()
+        # Updates screen then goes to next frame
+        pg.display.update()
+        clock.tick(fps)
 
-renaming = Renaming_Window(root, file_sys)
+    pg.quit()
+    quit()
 
-root.mainloop()
-
-# EOF
+game_Loop()

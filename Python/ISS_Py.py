@@ -4,7 +4,6 @@ import json
 import turtle
 import urllib.request
 import turtle
-
 from datetime import datetime
 
 
