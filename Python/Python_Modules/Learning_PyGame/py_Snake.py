@@ -22,6 +22,10 @@ game_display = pg.display.set_mode(window_size)
 pg.display.set_caption('Slither')
 pg.display.set_icon(pg.image.load('apple.png'))
 
+# Load sprites
+snake_head = pg.image.load('snakehead.png')
+apple = pg.image.load('apple.png')
+
 clock = pg.time.Clock()
 
 fps = 15
@@ -29,8 +33,6 @@ snake_size = 20
 apple_size = 45
 movement = 20
 
-snake_head = pg.image.load('snakehead.png')
-apple = pg.image.load('apple.png')
 
 # Display messages on screen function
 def show_Msg(msg, coords, color=RED, font='verdana', fSize=30, fBold=False):

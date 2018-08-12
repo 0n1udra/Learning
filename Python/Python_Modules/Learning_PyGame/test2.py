@@ -115,6 +115,7 @@ def snake(sSize, snake_list, snake_head):
 class Main:
     # Main Game Loop
 
+
     @staticmethod
     def main():
         global new_snake_head, movement
