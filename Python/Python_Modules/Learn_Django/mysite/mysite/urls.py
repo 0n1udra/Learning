@@ -18,7 +18,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('personal.urls')),
-    path('webapp/', include('webapp.urls')),
     path('blog/', include('blog.urls')),
     path('admin/', admin.site.urls),
 ]
+handler404 = 'personal.views.handler404'
+handler500 = 'personal.views.handler500'
+

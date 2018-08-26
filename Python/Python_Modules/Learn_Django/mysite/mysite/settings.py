@@ -20,18 +20,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_3a)ar9+7uiiud_hoja2)l&9#e=&oh878xc+-=v07s6)t*)x#-'
+with open('/etc/secret_key.txt') as f:
+        SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['purepy.tk', 'www.purepy.tk', 'localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'webapp',
     'blog',
     'personal',
     'django.contrib.admin',
@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 

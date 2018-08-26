@@ -1,0 +1,14 @@
+{% extends "personal/header.html" %}
+{% block content %}
+
+	<style>
+		p, h5 { display: inline-block }
+		p { font-size: 90% }
+	</style>
+
+	{% for post in object_list %}
+		<p>#{{post.id}} - {{ post.date|date:"Y-m-d" }}</p>
+		<h5><a href="/blog/{{post.id}}"> {{ post.title }}</a></h5>
+		<br>
+	{% endfor %}
+{% endblock %}
