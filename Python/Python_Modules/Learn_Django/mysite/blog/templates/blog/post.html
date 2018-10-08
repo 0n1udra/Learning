@@ -1,10 +1,22 @@
 {% extends "personal/header.html" %}
 {% block content %}
-<h3>{{ post.title }}</h3>
-<h6>{{ post.date }}</h6>
+	<h3>{{ post.title }}</h3>
+	<h6>{{ post.date }}</h6>
+	<div class="container">
+		{{ post.body|safe|linebreaks}}
+	</div>
+	<br><br>
 
-<div class = "container">
-	{{ post.body|safe|linebreaks}}
-</div>
-<br><br>
+	<ul class="pager">
+        {% if post.get_next_by_created_at %}
+            <li class="previous">
+                 <a href="/blog/">Previous Post</a>
+            </li>
+        {% endif %}
+        {% if post.get_previous_by_created_at %}
+            <li class="next">
+                 <a href="/blog/">Next Post</a>
+            </li>
+        {% endif %}
+    </ul>
 {% endblock %}

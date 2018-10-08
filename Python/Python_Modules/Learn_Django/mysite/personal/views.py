@@ -11,15 +11,10 @@ def index(request):
     #get_client_ip(request) For function in this file
     # Better way to get ip using ipware
     ip, is_routable = get_client_ip(request)
-    if ip is None:
-        print('ERROR: Getting IP address')
+    if ip is None: saveip.saveip("ERROR", False)
     else:
-        if is_routable:
-            print("INFO: Routable IP", ip)
-            saveip.saveip(ip, True)
-        else:
-            print("INFO: Non-Routable IP", ip)
-            saveip.saveip(ip, False)
+        if is_routable: saveip.saveip(ip, True)
+        else: saveip.saveip(ip, False)
 
     return render(request, 'personal/home.html')
 
@@ -33,16 +28,13 @@ def about(request):
 
 # 404/500
 def handler404(request, context_instance=None):
-    print('HI')
-    response = render(request, 'personal/error.html',
-                    {'content': ['404 Page Not Found']})
-    response.status_code = 404
+    response = render(request, 'personal/error.html', 
+            {'content': ['404 Page Not Found']}, status=404)
     return response
 
 def handler500(request, context_instance=None):
-    response = render(request, 'personal/error.html',
-                    {'content': ['500 Error']})
-    response.status_code = 500
+    response = render(request, 'personal/500.html', 
+            {'content': ['500 Error']}, status=500)
     return response
 
 # def get_client_ipp(request):

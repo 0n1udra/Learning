@@ -1,0 +1,8 @@
+.page-footer {
+    background-color: rgba(0, 0, 0, 0.678);
+    color: white;
+}
+
+.list-group-item {
+    text-anchor: right;
+}
