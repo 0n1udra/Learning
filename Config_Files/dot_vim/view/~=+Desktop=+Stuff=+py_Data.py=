@@ -59,7 +59,7 @@ setlocal keywordprg=pydoc
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispwords=
-setlocal nolist
+setlocal list
 setlocal makeencoding=
 setlocal makeprg=
 setlocal matchpairs=(:),{:},[:]
@@ -81,7 +81,7 @@ setlocal noshortname
 setlocal signcolumn=auto
 setlocal nosmartindent
 setlocal softtabstop=4
-setlocal nospell
+setlocal spell
 setlocal spellcapcheck=[.?!]\\_[\\])'\"\	\ ]\\+
 setlocal spellfile=
 setlocal spelllang=en_us
@@ -103,14 +103,32 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-22
+17
 normal! zo
-let s:l = 30 - ((29 * winheight(0) + 30) / 61)
+25
+normal! zo
+26
+normal! zo
+31
+normal! zo
+34
+normal! zo
+61
+normal! zo
+68
+normal! zo
+73
+normal! zo
+77
+normal! zo
+78
+normal! zo
+let s:l = 95 - ((42 * winheight(0) + 23) / 47)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-30
-normal! 0
+95
+normal! 017|
 let &so = s:so_save | let &siso = s:siso_save
 doautoall SessionLoadPost
 " vim: set ft=vim :

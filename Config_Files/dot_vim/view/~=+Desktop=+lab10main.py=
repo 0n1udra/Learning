@@ -27,7 +27,7 @@ setlocal dictionary=
 setlocal nodiff
 setlocal equalprg=
 setlocal errorformat=
-setlocal expandtab
+setlocal noexpandtab
 if &filetype != 'python'
 setlocal filetype=python
 endif
@@ -59,7 +59,7 @@ setlocal keywordprg=pydoc
 setlocal nolinebreak
 setlocal nolisp
 setlocal lispwords=
-setlocal nolist
+setlocal list
 setlocal makeencoding=
 setlocal makeprg=
 setlocal matchpairs=(:),{:},[:]
@@ -103,13 +103,23 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-22
+15
 normal! zo
-let s:l = 30 - ((29 * winheight(0) + 30) / 61)
+26
+normal! zo
+38
+normal! zo
+43
+normal! zo
+54
+normal! zo
+75
+normal! zo
+let s:l = 21 - ((20 * winheight(0) + 20) / 40)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-30
+21
 normal! 0
 let &so = s:so_save | let &siso = s:siso_save
 doautoall SessionLoadPost
