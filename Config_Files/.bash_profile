@@ -4,59 +4,44 @@ elif infocmp xterm-256color >/dev/null 2>&1; then
 	export TERM='xterm-256color';
 fi;
 
-# personal
-
-###########
 prompt_git() {
 	local s='';
 	local branchName='';
-
 	# Check if the current directory is in a Git repository.
 	if [ $(git rev-parse --is-inside-work-tree &>/dev/null; echo "${?}") == '0' ]; then
-
 		# check if the current directory is in .git before running git checks
 		if [ "$(git rev-parse --is-inside-git-dir 2> /dev/null)" == 'false' ]; then
-
 			# Ensure the index is up to date.
-			git update-index --really-refresh_Treeview -q &>/dev/null;
-
+			git update-index --really-refresh -q &>/dev/null;
 			# Check for uncommitted changes in the index.
 			if ! $(git diff --quiet --ignore-submodules --cached); then
 				s+='+';
 			fi;
-
 			# Check for unstaged changes.
 			if ! $(git diff-files --quiet --ignore-submodules --); then
 				s+='!';
 			fi;
-
 			# Check for untracked files.
 			if [ -n "$(git ls-files --others --exclude-standard)" ]; then
 				s+='?';
 			fi;
-
 			# Check for stashed files.
 			if $(git rev-parse --verify refs/stash &>/dev/null); then
 				s+='$';
 			fi;
-
 		fi;
-
 		# Get the short symbolic ref.
 		# If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
 		# Otherwise, just give up.
 		branchName="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
 			git rev-parse --short HEAD 2> /dev/null || \
 			echo '(unknown)')";
-
 		[ -n "[${s}]" ] && s=" [${s}]";
-
 		echo -e "${1}${branchName}${2}${s}";
 	else
 		return;
 	fi;
 }
-
 if tput setaf 1 &> /dev/null; then
 	tput sgr0; # reset colors
 	bold=$(tput bold);
@@ -107,6 +92,7 @@ export COLOR_LIGHT_GRAY='\e[0;37m'
 
 # Highlight the user name when logged in as root.
 if [[ "${USER}" == "root" ]]; then
+    #This only works if you use sudo -i not su. git prompt will break
 	userStyle="${COLOR_YELLOW}";
 	symbol="#";
 else
@@ -124,15 +110,15 @@ fi;
 # Set the terminal title and prompt.
 PS1="\[\033]0;\W\007\]"; # working directory base name
 PS1+="\[${bold}\]\n"; # newline
+PS1+="\[${orange}\]\H"; # Host Computer name
+PS1+="\[${white}\]:";
 PS1+="\[${userStyle}\]\u"; # username
 PS1+="\[${white}\] > ";
 PS1+="\[${COLOR_GREEN}\]\w"; # working directory full path
 PS1+="\$(prompt_git \"\[${white}\] : \[${blue}\]\" \"\[${blue}\]\")"; #Git repository details
 PS1+="\n";
-PS1+="\[${white}\]\${symbol}> \[${reset}\]"; # `$` (and reset color)
+PS1+="\[${white}\]${symbol}> \[${reset}\]"; # `$/#` (and reset color)
 export PS1;
-
-#####################################################3
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave
@@ -144,33 +130,17 @@ export EDITOR="$VISUAL"
 
 # perminate aliases, can be unalias for current session
 alias ls='ls -GFh'
-alias ll='ls -lah'
+# List only directories
+alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
+alias ll='ls -laihtFG'
 alias python=python3
 alias python2=python2.7
-alias install='brew install'
 alias nano='nano --linenumbers --smooth -c --morespace'
-
-# enable mouse support, show line numbers, add more space and show more info at bottom
-
-alias sedit="open /Applications/Sublime\ Text.app"
-# uses sublime to edit
 
 # Setting PATH for Python 3.6
 # The original version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 export PATH
-
-############################################ from github
-#!/usr/bin/env bash
-. ~/.gitalias
-
-# Easier navigation: .., ..., ...., ....., ~ and -
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ~="cd ~" # `cd` is probably faster to type though
-alias -- -="cd -"
 
 if ls --color > /dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
@@ -181,26 +151,6 @@ else # macOS `ls`
 	export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 fi
 
-# Shortcuts
-
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-
-alias h="history"
-alias j="jobs"
-
-# List all files colorized in long format
-alias l="ls -lF ${colorflag}"
-
-# List all files colorized in long format, including dot files
-alias la="ls -aF ${colorflag}"
-
-# List only directories
-alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
-
-# Always use color output for `ls`
-alias ls="command ls ${colorflag}"
-
 # Always enable colored `grep` output
 # Note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage.
 alias grep='grep --color=auto'
@@ -210,15 +160,11 @@ alias egrep='egrep --color=auto'
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
-# Stopwatch
-alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'
-
 # Get macOS Software Updates, and update installed Ruby gems, Homebrew, npm, and their installed packages
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm install npm -g; npm update -g; sudo gem update --system; sudo gem update; sudo gem cleanup'
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Show active network interfaces
@@ -232,10 +178,8 @@ alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/La
 
 # Canonical hex dump; some systems have this symlinked
 command -v hd > /dev/null || alias hd="hexdump -C"
-
 # macOS has no `md5sum`, so use `md5` as a fallback
 command -v md5sum > /dev/null || alias md5sum="md5"
-
 # macOS has no `sha1sum`, so use `shasum` as a fallback
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
@@ -243,9 +187,6 @@ command -v sha1sum > /dev/null || alias sha1sum="shasum"
 jscbin="/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc";
 [ -e "${jscbin}" ] && alias jsc="${jscbin}";
 unset jscbin;
-
-# Trim new lines and copy to clipboard
-alias c="tr -d '\n' | pbcopy"
 
 # Recursively delete `.DS_Store` files
 alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
@@ -278,7 +219,6 @@ alias spoton="sudo mdutil -a -i on"
 # PlistBuddy alias, because sometimes `defaults` just doesn’t cut it
 alias plistbuddy="/usr/libexec/PlistBuddy"
 
-
 # Ring the terminal bell, and put a badge on Terminal.app’s Dock icon
 # (useful when executing time-consuming commands)
 alias badge="tput bel"
@@ -304,3 +244,12 @@ alias path='echo -e ${PATH//:/\\n}'
 
 # added by Anaconda3 5.2.0 installer
 export PATH="/anaconda3/bin:$PATH"
+
+pi='pi@192.168.1.63'
+alias sshpi='ssh pi@192.168.1.63'
+alias sshpubpi='ssh pi@173.209.100.110 -p 7274'
+
+alias startrmate='ssh -R 52698:127.0.0.1:52698'
+alias startpimate='ssh -R 52698:127.0.0.1:52698 pi@192.168.1.63'
+
+alias sourcebf="source ~/.bash_profile"
