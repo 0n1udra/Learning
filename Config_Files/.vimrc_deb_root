@@ -1,37 +1,4 @@
-"cp .vimrc ~/.vimrc Copies vimrc to home dir
-"
-"https://dougblack.io/words/a-good-vimrc.html
-"Link to a for helpful vim stuff
-
-set nocompatible              " required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-" add all your plugins here (note older versions of Vundle
-" used Bundle instead of Plugin)
-Plugin 'scrooloose/nerdtree'
-Plugin 'jacoborus/tender.vim' "Color scheme
-Plugin 'vim-airline/vim-airline'
-Plugin 'terryma/vim-multiple-cursors'
-
-" ...
-" All of your Plugins must be added before the following line
-
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-" autocmd vimenter * NERDTree " Opens NERDTree when vim starts
-map <C-m> :NERDTreeToggle<CR>
-
+"Debian Root Vim File
 
 set number " Turn's on number
 "set relativenumber
@@ -48,7 +15,7 @@ syntax on " Eables syntax highlighting
 if (has("termguicolors"))
  set termguicolors
 endif
-colorscheme tender
+colorscheme evening
 
 set term=xterm-256color
 set t_ut=
@@ -108,6 +75,3 @@ function! HLNext (blinktime)
     call matchdelete(ring)
     redraw
 endfunction
-
-" Remove any introduced trailing whitespace after moving
-let g:DVB_TrimWS = 1
