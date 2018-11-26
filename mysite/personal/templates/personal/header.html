@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Head -->
+    <head>
+        <title>PurePy</title>
+        <meta charset="utf-8" />
+        {% load staticfiles %}
+        <!-- Bootstrap stylesheet -->
+        <link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type = "text/css"/>
+        <!-- my custom stylesheet -->
+        <link rel="stylesheet" href="{% static 'personal/custom.css' %}" type = "text/css"/>
+
+        <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+
+        <!-- Favicon (tab icon) -->
+        <link rel="shortcut icon" href="{% static 'personal/python.png' %}" type="image/png"/>
+
+        <style type="text/css">
+            html,
+            body {
+            height:100%
+            }
+        </style>
+    </head>
+    <!-- /Head -->
+
+    <!-- Body -->
+    <body class="body" style="background-color:#f6f6f6">
+        <div class="container-fluid" style="min-height:95%; ">
+           
+            <!-- Title -->
+            <div class="row">
+                <div class="col-sm-2">
+                    <br>
+                    <center>
+                        <p>Drake T.</p>
+                    </center>
+                </div>
+                <div class="col-sm-8">
+                    <br>
+                    <!-- TITLE -->
+                    <center>
+                        <h3>PurePy</h3>
+                    </center>
+                </div>
+                <div class="col-sm-2">
+                    <br>
+                    <center>
+                    </center>
+                </div>
+            </div>
+            <hr>
+            <!-- /Title -->
+
+            <!-- Main -->
+            <div class="row">
+
+                <!-- NavBar -->
+                <div class="col-sm-2">
+                    <br> <br>
+                    <div class="list-group list-group-flush">
+                            <a href="/" class="list-group-item list-group-item-action">Home</a>
+                            <a href="/blog/" class="list-group-item list-group-item-action">Blog</a>
+                            <a href="/about/" class="list-group-item list-group-item-action">About</a>
+                            <a href="/contact/" class="list-group-item list-group-item-action">Contact</a>
+                    </div>
+                <!-- /Navbar -->
+
+                </div> <!--col-sm-2-->
+
+                <!-- Content -->
+                <div class="col-sm-8">
+                    <div class='container-fluid'>
+                        <br><br>
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                </div>
+                <!-- /Content -->
+
+                <!-- Content Nav Links -->
+                <div class="col-sm-2">
+                    <div class="container-fluid">
+
+                    {% block ContentNav %}
+                    {% endblock %}
+                    </div>
+
+                </div>
+                <!-- /Content Nav Linkss -->
+
+            </div>
+            <!-- /Main -->
+
+        </div>
+    </body>
+    <!-- /Body -->
+
+    <!-- Footer -->
+    <footer class="page-footer font-small pt-4">
+
+        <!-- Footer Content & Links -->
+        <div class="container-fluid text-center text-md-left">
+
+            <!-- Grid row -->
+            <div class="row">
+
+                <!-- Footer Content Column -->
+                <div class="col-md-6 mt-md-0 mt-3">
+                    <h5 class="text-uppercase">Note:</h5>
+                    <p>This website is unstable. Should not be taken formally or officially.</p>
+                </div>
+                <!-- /Content -->
+
+                <hr class="clearfix w-100 d-md-none pb-3">
+
+                <!-- Links
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <h5 class="text-uppercase">Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#!">Link 1</a></li>
+                        <li><a href="#!">Link 2</a></li>
+                        <li><a href="#!">Link 3</a></li>
+                        <li><a href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+                < -- /Links -->
+        
+                <!-- Contact Links -->
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <h5 class="text-uppercase">Social</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="https://twitter.com/D_T99">Twitter</a></li>
+                        <!-- <li><a href="https://facebook.com">Facebook</a></li> -->
+                        <li><a href="https://plus.google.com/u/0/+DrakeThomas">Google</a></li>
+                        <li><a href="https://www.linkedin.com/in/drake-t-320b75152/">LinkedIn</a></li>
+                    </ul>
+                </div>
+                <!-- /Links -->
+            </div>
+            <!-- /Grid row -->
+        </div>
+        <!-- /Content, Links -->
+
+        <!-- Copyright 
+        <div class="footer-copyright text-center py-3">© 2018 Copyright:
+            <a href="">Link</a>
+        </div>
+        < -- /Copyright -->
+    
+    </footer>
+    <!-- Footer -->
+
+
+</html>

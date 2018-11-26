@@ -1,0 +1,14 @@
+BEGIN;
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE `auth_group`;
+TRUNCATE `auth_permission`;
+TRUNCATE `auth_group_permissions`;
+TRUNCATE `auth_user_user_permissions`;
+TRUNCATE `auth_user`;
+TRUNCATE `django_content_type`;
+TRUNCATE `blog_post`;
+TRUNCATE `auth_user_groups`;
+TRUNCATE `django_admin_log`;
+TRUNCATE `django_session`;
+SET FOREIGN_KEY_CHECKS = 1;
+COMMIT;
