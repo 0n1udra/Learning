@@ -14,16 +14,17 @@ def problem1(Range, n1, n2=0):
 
 # By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.
 def problem2(Range):
-    nums = [1, 2]
-    while(True):
-        nums.append((nums[-1] + nums[-2]))
-        if(nums[-1] > Range): break
+    nums = [1, 1]
+    for i in range(Range):
+        nums.append(nums[-1] + nums[-2])
 
-    evenFib = [x for x in nums if(x % 2 == 0)]
+    evenFib = [x for x in nums if not (x % 2)]
+
+
     print("Fibonacci: ", nums)
     print("Even Fibonacci: ", evenFib)
     print("Sum Even Fibonacci: ", sum(evenFib))
-    # problem2(4_000_000)
+problem2(4_000_000)
 
 
 # Find the largest palindrome made from the product of two 3-digit numbers.
