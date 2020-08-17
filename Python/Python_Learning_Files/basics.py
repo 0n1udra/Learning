@@ -7,8 +7,8 @@
 def basicData():
     # 1.1 variables
     string1 = "hi"  # makes a string with 'hi'
-    int = 1  # makes a integer 1
-    float = 3.14  # makes a float 3.14
+    int1 = 1  # makes a integer 1
+    float2 = 3.14  # makes a float 3.14
 
     # a float is a decimal, a integer is a whole number
     answer = True  # a boolean, is a true or false variable
@@ -16,7 +16,9 @@ def basicData():
     nothing = None  # 'None' is an absance(blank) of data, because when making a variable you need somehting
 
     var1, var2, var3 = 1, 2, 3  # making multiple variables on one line, var1 goes to 1, var2 goes to 2 etc..
-    print(int)
+    var1 = var2 = var3 = 0 # set variables to same
+
+    print(int1) # print variable
 
 
 ##### Naming ##############################################
@@ -24,9 +26,9 @@ def basicData():
 """
 -Overview-
 x, variable, thing = 12/'hi'/1.2
-list2, dict1, namesOfPeople, foodToGet = []/{}/()
+list2, dict1, namesOfPeople, foodToGet = for list, tuples, dictionary, []/{}/()
 class Class, ClassOfStuff, ASimpleClass:
-def func1/function_Does_Something/a_Quick_Func():
+funcOne, doSomething
 
 -Variables/lists/dict/etc-
 integer = 12  --  one word
@@ -78,6 +80,8 @@ def printData():
     print("yo " + "hey")  # concatenates the two words, you need to add spaces in the string so it doesn't run on
 
     print('lol' * 10)  # prints out string 10 times
+    
+    print('nonewline', end='')
 
     print('1'), print('2')
     # using two print statements on the same line, but it doesn't actully print 1 and two on same line
